@@ -1,4 +1,4 @@
-using System.Diagnostics.Metrics;
+﻿using System.Diagnostics.Metrics;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Globalization;
@@ -48,7 +48,7 @@ namespace Cost_2100_Path_Loss_Calculator
 
             lblResult.Visible = true;
             lblSignalStrength.Visible = true;
-
+            btnSaveResults.Visible = true;
         }
 
         private void ComboBox1_Click(object sender, EventArgs e)
@@ -107,44 +107,7 @@ namespace Cost_2100_Path_Loss_Calculator
 
 
 
-        private bool HighlightEmptyFields()
-        {
-            bool allFieldsFilled = true; // Flag to track if all fields are filled
 
-            foreach (Control control in this.Controls)
-            {
-                if (control is TextBox textBox)
-                {
-
-
-                    if (string.IsNullOrWhiteSpace(textBox.Text) || (textBox.Tag != null && textBox.Text == textBox.Tag.ToString())) // Check if the TextBox is empty or placeholdered
-                    {
-                        textBox.BackColor = Color.Red; // Highlight empty TextBox in red
-                        allFieldsFilled = false;      // Mark as incomplete
-                    }
-
-                    else
-                    {
-                        textBox.BackColor = SystemColors.Window; // Reset background for filled TextBox
-                    }
-
-                }
-                else if (control is ComboBox comboBox)
-                {
-                    if (comboBox.SelectedIndex == -1) // Check if no item is selected
-                    {
-                        comboBox.BackColor = Color.Red; // Highlight empty ComboBox in red
-                        allFieldsFilled = false;       // Mark as incomplete
-                    }
-                    else
-                    {
-                        comboBox.BackColor = SystemColors.Window; // Reset background for filled ComboBox
-                    }
-                }
-            }
-
-            return allFieldsFilled; // Return whether all fields are valid
-        }
 
 
         private bool ValidateInputs()
@@ -238,8 +201,6 @@ namespace Cost_2100_Path_Loss_Calculator
             }
         }
 
-
-
         private const double Urban_A = 120;
         private const double Urban_B = 30;
         private const double Urban_C = 2;
@@ -253,44 +214,36 @@ namespace Cost_2100_Path_Loss_Calculator
 
         private void btnCalculate_Click(object sender, EventArgs e)
         {
-
-            // Call HighlightEmptyFields and check if all fields are filled
-
             if (!ValidateInputs())
             {
-                return; // Stop calculation
+                return; // Stop calculation if inputs are invalid
             }
-            else
-                MessageBox.Show("All fields are valid. Proceeding with calculation.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-
 
             // Get input values
             double distance = double.Parse(txtDistance.Text);
             double frequency = double.Parse(txtFrequency.Text);
-            double transmitPower = double.Parse(txtTransmitPower.Text); // Transmit power in dBm
-            double receiverSensitivity = double.Parse(txtReceiverSensitivity.Text); // Receiver sensitivity in dBm
-            double antennaHeightTransmitter = double.Parse(txtAntennaHeightTransmitter.Text); // Transmitter antenna height in meters
-            double antennaHeightReceiver = double.Parse(txtAntennaHeightReceiver.Text); // Receiver antenna height in meters
+            double transmitPower = double.Parse(txtTransmitPower.Text);
+            double receiverSensitivity = double.Parse(txtReceiverSensitivity.Text);
+            double antennaHeightTransmitter = double.Parse(txtAntennaHeightTransmitter.Text);
+            double antennaHeightReceiver = double.Parse(txtAntennaHeightReceiver.Text);
             string environment = cmbEnvironment.SelectedItem.ToString();
-            double BuildingHeight = double.Parse(txtBuildingHeight.Text);
-            double ClutterFactor = double.Parse(txtClutterFactor.Text);
+            double buildingHeight = double.Parse(txtBuildingHeight.Text);
+            double clutterFactor = double.Parse(txtClutterFactor.Text);
 
+            // Select MIMO Configuration
+            int numTx = 1, numRx = 1;
+            if (cmbMIMO.SelectedItem != null)
+            {
+                string mimoConfig = cmbMIMO.SelectedItem.ToString();
+                if (mimoConfig == "2x2") { numTx = 2; numRx = 2; }
+                else if (mimoConfig == "4x4") { numTx = 4; numRx = 4; }
+            }
 
+            // Compute MIMO Gain
+            double mimoGain = 10 * Math.Log10(numTx * numRx);
 
-
-
-
-
-
-
-
-
-
-
-            // Set constants based on environment
+            // Set environment constants
             double A, B, C, K;
-
             if (environment == "Urban")
             {
                 A = Urban_A;
@@ -311,32 +264,36 @@ namespace Cost_2100_Path_Loss_Calculator
                 return;
             }
 
-
-
-            // Path Loss Calculation
+            // Compute Path Loss (COST-2100 Model)
             double pathLoss = A + B * Math.Log10(distance) + C * Math.Log10(frequency) + K;
 
-            // Adjust path loss based on antenna heights,buildings height and clutter factor
+            // Apply MIMO Gain
+            pathLoss -= mimoGain;
+
+            // Adjust path loss based on environment
             double antennaCorrection = (antennaHeightTransmitter * antennaHeightReceiver) / distance;
-            double buildingHeightFactor = BuildingHeight * 0.5;
-            double clutterAdjustment = ClutterFactor > 0 ? ClutterFactor * 2 : 0;
+            double buildingHeightFactor = buildingHeight * 0.5;
+            double clutterAdjustment = clutterFactor > 0 ? clutterFactor * 2 : 0;
             pathLoss += antennaCorrection + buildingHeightFactor + clutterAdjustment;
 
-            // Display the result
-            lblResult.Text = "Path Loss: " + pathLoss.ToString("F2") + " dB";
+            // Adjust Receiver Sensitivity for MIMO
+            double receiverSensitivityMIMO = receiverSensitivity - 10 * Math.Log10(numRx);
 
-            // Optional: Calculate signal strength at receiver (taking transmit power into account)
+            // Compute Received Signal Strength
             double receivedSignalStrength = transmitPower - pathLoss;
-            lblSignalStrength.Text = "Received Signal Strength: " + receivedSignalStrength.ToString("F2") + " dBm";
 
-            // Optional: Check if the received signal is above receiver sensitivity
-            if (receivedSignalStrength >= receiverSensitivity)
+            // Display results
+            lblResult.Text = $"Path Loss: {pathLoss:F2} dB (With MIMO)";
+            lblSignalStrength.Text = $"Received Signal Strength: {receivedSignalStrength:F2} dBm";
+
+            // Check if signal is above sensitivity threshold
+            if (receivedSignalStrength >= receiverSensitivityMIMO)
             {
-                lblResult.Text += "\nSignal is above sensitivity threshold!";
+                lblResult.Text += "\n✅ Signal is above sensitivity threshold - Communication is possible!";
             }
             else
             {
-                lblResult.Text += "\nSignal is below sensitivity threshold.";
+                lblResult.Text += "\n❌ Signal is below sensitivity threshold - Communication will fail!";
             }
 
             ShowResults();
@@ -368,5 +325,153 @@ namespace Cost_2100_Path_Loss_Calculator
                 SetPlaceholderForTextBox(txtClutterFactor);
             }
         }
+
+
+
+        /*private void HighlightResults()
+        {
+            double minPathLoss = double.MaxValue;
+            double maxPathLoss = double.MinValue;
+            double minSignalStrength = double.MaxValue;
+            double maxSignalStrength = double.MinValue;*/
+
+            // Find min/max values
+            /*foreach (DataGridViewRow row in dgvHistory.Rows)
+            {
+                if (row.Cells["PathLoss"].Value != null && row.Cells["SignalStrength"].Value != null)
+                {
+                    double pathLoss = double.Parse(row.Cells["PathLoss"].Value.ToString());
+                    double signalStrength = double.Parse(row.Cells["SignalStrength"].Value.ToString());
+
+                    if (pathLoss < minPathLoss) minPathLoss = pathLoss;
+                    if (pathLoss > maxPathLoss) maxPathLoss = pathLoss;
+                    if (signalStrength < minSignalStrength) minSignalStrength = signalStrength;
+                    if (signalStrength > maxSignalStrength) maxSignalStrength = signalStrength;
+                }
+            }
+
+            
+           foreach (DataGridViewRow row in dgvHistory.Rows)
+            {
+                if (row.Cells["PathLoss"].Value != null && row.Cells["SignalStrength"].Value != null)
+                {
+                    double pathLoss = double.Parse(row.Cells["PathLoss"].Value.ToString());
+                    double signalStrength = double.Parse(row.Cells["SignalStrength"].Value.ToString());
+
+                    // Highlight best values (Green)
+                    if (pathLoss == minPathLoss) row.Cells["PathLoss"].Style.BackColor = Color.LightGreen;
+                    if (signalStrength == maxSignalStrength) row.Cells["SignalStrength"].Style.BackColor = Color.LightGreen;
+
+                    // Highlight worst values (Red)
+                    if (pathLoss == maxPathLoss) row.Cells["PathLoss"].Style.BackColor = Color.LightCoral;
+                    if (signalStrength == minSignalStrength) row.Cells["SignalStrength"].Style.BackColor = Color.LightCoral;
+                }
+            }
+        }*/
+
+
+        private void btnSaveResults_Click(object sender, EventArgs e)
+        {
+            using (SaveFileDialog saveFileDialog = new SaveFileDialog())
+            {
+                saveFileDialog.Filter = "CSV Files (*.csv)|*.csv|All Files (*.*)|*.*";
+                saveFileDialog.Title = "Save Calculation Results";
+                saveFileDialog.FileName = "PathLossHistory.csv";
+
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        bool fileExists = File.Exists(saveFileDialog.FileName);
+
+                        using (StreamWriter writer = new StreamWriter(saveFileDialog.FileName, true))
+                        {
+                            // Write headers only if the file is new
+                            if (!fileExists)
+                            {
+                                writer.WriteLine("Timestamp;Path Loss (dB);Signal Strength (dBm)"); // Use ; as separator
+                            }
+
+                            // Extract only the numeric values
+                            string pathLossValue = lblResult.Text.Split('\n')[0].Replace("Path Loss: ", "").Replace(" dB", "").Trim();
+                            string signalStrengthValue = lblSignalStrength.Text.Replace("Received Signal Strength: ", "").Replace(" dBm", "").Trim();
+
+                            // Ensure correct number formatting
+                            if (double.TryParse(pathLossValue, out double pathLoss) && double.TryParse(signalStrengthValue, out double receivedSignalStrength))
+                            {
+                                string csvLine = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss};{pathLoss:F2};{receivedSignalStrength:F2}"; // Use ; instead of ,
+                                writer.WriteLine(csvLine);
+                            }
+                            else
+                            {
+                                MessageBox.Show("Error extracting numeric values. Results were not saved.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                return;
+                            }
+                        }
+
+                        MessageBox.Show("Results saved successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Error saving file: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+        }
+
+        private void btnLoadResults_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Filter = "CSV Files (*.csv)|*.csv|All Files (*.*)|*.*";
+                openFileDialog.Title = "Load Calculation History";
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        string[] lines = File.ReadAllLines(openFileDialog.FileName);
+
+                        // Clear rows but keep column headers
+                        dgvHistory.Rows.Clear();
+
+                        // Add columns only if they don't exist
+                        if (dgvHistory.Columns.Count == 0)
+                        {
+                            dgvHistory.Columns.Add("Timestamp", "Timestamp");
+                            dgvHistory.Columns.Add("PathLoss", "Path Loss (dB)");
+                            dgvHistory.Columns.Add("SignalStrength", "Signal Strength (dBm)");
+
+                            // Ensure numeric columns display properly
+                            dgvHistory.Columns["PathLoss"].DefaultCellStyle.Format = "F2";
+                            dgvHistory.Columns["SignalStrength"].DefaultCellStyle.Format = "F2";
+                        }
+
+                        foreach (string line in lines.Skip(1)) // Skip the header row
+                        {
+                            string[] data = line.Split(';'); // Use ; instead of ,
+
+                            if (data.Length == 3)
+                            {
+                                string timestamp = data[0].Trim();
+                                if (double.TryParse(data[1].Trim(), out double pathLoss) && double.TryParse(data[2].Trim(), out double signalStrength))
+                                {
+                                    dgvHistory.Rows.Add(timestamp, pathLoss.ToString("F2"), signalStrength.ToString("F2"));
+                                }
+                            }
+                        }
+
+                        MessageBox.Show("History loaded successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Error loading file: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+            //HighlightResults();
+        }
+
+
     }
 }
