@@ -267,21 +267,23 @@ namespace Cost_2100_Path_Loss_Calculator
             // Compute Path Loss (COST-2100 Model)
             double pathLoss = A + B * Math.Log10(distance) + C * Math.Log10(frequency) + K;
 
-            // Apply MIMO Gain
-            pathLoss -= mimoGain;
+            double antennaCorrection = -20 * Math.Log10(antennaHeightTransmitter * antennaHeightReceiver);
+            pathLoss += antennaCorrection;
 
-            // Adjust path loss based on environment
-            double antennaCorrection = (antennaHeightTransmitter * antennaHeightReceiver) / distance;
-            double buildingHeightFactor = buildingHeight * 0.5;
-            double clutterAdjustment = clutterFactor > 0 ? clutterFactor * 2 : 0;
-            pathLoss += antennaCorrection + buildingHeightFactor + clutterAdjustment;
+            double buildingHeightFactor = 20 * Math.Log10(buildingHeight);
+            pathLoss += buildingHeightFactor;
+
+            double clutterAdjustment = 10 * Math.Log10(clutterFactor);
+            //double clutterAdjustment = clutterFactor > 0 ? clutterFactor * 2 : 0;
+            pathLoss += clutterAdjustment;
 
             // Adjust Receiver Sensitivity for MIMO
             double receiverSensitivityMIMO = receiverSensitivity - 10 * Math.Log10(numRx);
 
             // Compute Received Signal Strength
             double receivedSignalStrength = transmitPower - pathLoss;
-
+            // Apply MIMO Gain to Received Signal Strength
+            receivedSignalStrength += 10 * Math.Log10(numRx);
             // Display results
             lblResult.Text = $"Path Loss: {pathLoss:F2} dB (With MIMO)";
             lblSignalStrength.Text = $"Received Signal Strength: {receivedSignalStrength:F2} dBm";
@@ -335,39 +337,39 @@ namespace Cost_2100_Path_Loss_Calculator
             double minSignalStrength = double.MaxValue;
             double maxSignalStrength = double.MinValue;*/
 
-            // Find min/max values
-            /*foreach (DataGridViewRow row in dgvHistory.Rows)
+        // Find min/max values
+        /*foreach (DataGridViewRow row in dgvHistory.Rows)
+        {
+            if (row.Cells["PathLoss"].Value != null && row.Cells["SignalStrength"].Value != null)
             {
-                if (row.Cells["PathLoss"].Value != null && row.Cells["SignalStrength"].Value != null)
-                {
-                    double pathLoss = double.Parse(row.Cells["PathLoss"].Value.ToString());
-                    double signalStrength = double.Parse(row.Cells["SignalStrength"].Value.ToString());
+                double pathLoss = double.Parse(row.Cells["PathLoss"].Value.ToString());
+                double signalStrength = double.Parse(row.Cells["SignalStrength"].Value.ToString());
 
-                    if (pathLoss < minPathLoss) minPathLoss = pathLoss;
-                    if (pathLoss > maxPathLoss) maxPathLoss = pathLoss;
-                    if (signalStrength < minSignalStrength) minSignalStrength = signalStrength;
-                    if (signalStrength > maxSignalStrength) maxSignalStrength = signalStrength;
-                }
+                if (pathLoss < minPathLoss) minPathLoss = pathLoss;
+                if (pathLoss > maxPathLoss) maxPathLoss = pathLoss;
+                if (signalStrength < minSignalStrength) minSignalStrength = signalStrength;
+                if (signalStrength > maxSignalStrength) maxSignalStrength = signalStrength;
             }
+        }
 
-            
-           foreach (DataGridViewRow row in dgvHistory.Rows)
+
+       foreach (DataGridViewRow row in dgvHistory.Rows)
+        {
+            if (row.Cells["PathLoss"].Value != null && row.Cells["SignalStrength"].Value != null)
             {
-                if (row.Cells["PathLoss"].Value != null && row.Cells["SignalStrength"].Value != null)
-                {
-                    double pathLoss = double.Parse(row.Cells["PathLoss"].Value.ToString());
-                    double signalStrength = double.Parse(row.Cells["SignalStrength"].Value.ToString());
+                double pathLoss = double.Parse(row.Cells["PathLoss"].Value.ToString());
+                double signalStrength = double.Parse(row.Cells["SignalStrength"].Value.ToString());
 
-                    // Highlight best values (Green)
-                    if (pathLoss == minPathLoss) row.Cells["PathLoss"].Style.BackColor = Color.LightGreen;
-                    if (signalStrength == maxSignalStrength) row.Cells["SignalStrength"].Style.BackColor = Color.LightGreen;
+                // Highlight best values (Green)
+                if (pathLoss == minPathLoss) row.Cells["PathLoss"].Style.BackColor = Color.LightGreen;
+                if (signalStrength == maxSignalStrength) row.Cells["SignalStrength"].Style.BackColor = Color.LightGreen;
 
-                    // Highlight worst values (Red)
-                    if (pathLoss == maxPathLoss) row.Cells["PathLoss"].Style.BackColor = Color.LightCoral;
-                    if (signalStrength == minSignalStrength) row.Cells["SignalStrength"].Style.BackColor = Color.LightCoral;
-                }
+                // Highlight worst values (Red)
+                if (pathLoss == maxPathLoss) row.Cells["PathLoss"].Style.BackColor = Color.LightCoral;
+                if (signalStrength == minSignalStrength) row.Cells["SignalStrength"].Style.BackColor = Color.LightCoral;
             }
-        }*/
+        }
+    }*/
 
 
         private void btnSaveResults_Click(object sender, EventArgs e)
@@ -389,17 +391,25 @@ namespace Cost_2100_Path_Loss_Calculator
                             // Write headers only if the file is new
                             if (!fileExists)
                             {
-                                writer.WriteLine("Timestamp;Path Loss (dB);Signal Strength (dBm)"); // Use ; as separator
+                                writer.WriteLine("Timestamp;Environment;MIMO;Path Loss (dB);Signal Strength (dBm)");
                             }
 
-                            // Extract only the numeric values
-                            string pathLossValue = lblResult.Text.Split('\n')[0].Replace("Path Loss: ", "").Replace(" dB", "").Trim();
-                            string signalStrengthValue = lblSignalStrength.Text.Replace("Received Signal Strength: ", "").Replace(" dBm", "").Trim();
+                            // Get Environment & MIMO Configurations
+                            string environment = cmbEnvironment.SelectedItem?.ToString() ?? "Unknown";
+                            string mimoConfig = cmbMIMO.SelectedItem?.ToString() ?? "1x1"; // Default 1x1
+
+                            // Extract numeric values from labels (ignore extra text)
+                            string pathLossText = lblResult.Text; // Full text from result label
+                            string signalStrengthText = lblSignalStrength.Text;
+
+                            // Extract only numeric values using regex
+                            string pathLossValue = System.Text.RegularExpressions.Regex.Match(pathLossText, @"[-+]?\d*\.?\d+").Value;
+                            string signalStrengthValue = System.Text.RegularExpressions.Regex.Match(signalStrengthText, @"[-+]?\d*\.?\d+").Value;
 
                             // Ensure correct number formatting
                             if (double.TryParse(pathLossValue, out double pathLoss) && double.TryParse(signalStrengthValue, out double receivedSignalStrength))
                             {
-                                string csvLine = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss};{pathLoss:F2};{receivedSignalStrength:F2}"; // Use ; instead of ,
+                                string csvLine = $"{DateTime.Now:yyyy-MM-dd HH:mm:ss};{environment};{mimoConfig};{pathLoss:F2};{receivedSignalStrength:F2}";
                                 writer.WriteLine(csvLine);
                             }
                             else
@@ -418,7 +428,6 @@ namespace Cost_2100_Path_Loss_Calculator
                 }
             }
         }
-
         private void btnLoadResults_Click(object sender, EventArgs e)
         {
             using (OpenFileDialog openFileDialog = new OpenFileDialog())
@@ -439,6 +448,8 @@ namespace Cost_2100_Path_Loss_Calculator
                         if (dgvHistory.Columns.Count == 0)
                         {
                             dgvHistory.Columns.Add("Timestamp", "Timestamp");
+                            dgvHistory.Columns.Add("Environment", "Environment");
+                            dgvHistory.Columns.Add("MIMO", "MIMO Configuration");
                             dgvHistory.Columns.Add("PathLoss", "Path Loss (dB)");
                             dgvHistory.Columns.Add("SignalStrength", "Signal Strength (dBm)");
 
@@ -447,16 +458,18 @@ namespace Cost_2100_Path_Loss_Calculator
                             dgvHistory.Columns["SignalStrength"].DefaultCellStyle.Format = "F2";
                         }
 
-                        foreach (string line in lines.Skip(1)) // Skip the header row
+                        foreach (string line in lines.Skip(1)) // Skip header row
                         {
-                            string[] data = line.Split(';'); // Use ; instead of ,
+                            string[] data = line.Split(';'); // Using ; as separator
 
-                            if (data.Length == 3)
+                            if (data.Length == 5)
                             {
                                 string timestamp = data[0].Trim();
-                                if (double.TryParse(data[1].Trim(), out double pathLoss) && double.TryParse(data[2].Trim(), out double signalStrength))
+                                string environment = data[1].Trim();
+                                string mimoConfig = data[2].Trim();
+                                if (double.TryParse(data[3].Trim(), out double pathLoss) && double.TryParse(data[4].Trim(), out double signalStrength))
                                 {
-                                    dgvHistory.Rows.Add(timestamp, pathLoss.ToString("F2"), signalStrength.ToString("F2"));
+                                    dgvHistory.Rows.Add(timestamp, environment, mimoConfig, pathLoss.ToString("F2"), signalStrength.ToString("F2"));
                                 }
                             }
                         }
