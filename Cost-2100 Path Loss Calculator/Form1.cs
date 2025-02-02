@@ -8,7 +8,7 @@ namespace Cost_2100_Path_Loss_Calculator
     public partial class Form1 : Form
     {
         private const string DistancePlaceholder = "Enter Distance(0.1 to 100 km)";
-        private const string FrequencyPlaceholder = "Enter Frequency(800 to 6.000 MHz)";
+        private const string FrequencyPlaceholder = "Enter Standard Frequency(800 to 6.000 MHz)";
         private const string TransmitPowerPlaceholder = "Enter Transmit Power(-100 to 50 dBm)";
         private const string ReceiverSensitivityPlaceholder = "Enter Receiver Sensitivity(-120 to 0 dBm)";
         private const string AntennaHeightTransmitterPlaceholder = "Enter Transmitter Antenna Height (1 to 250 Meters)";
@@ -123,10 +123,16 @@ namespace Cost_2100_Path_Loss_Calculator
             }
 
             // Validate frequency (in MHz, reasonable range 100 to 6000 MHz)
-            if (!double.TryParse(txtFrequency.Text, out value) || value < 800 || value > 6000)
+            double StandardFxValue;
+            int[] validFrequencies = { 800, 850, 900, 1800, 1900, 2100,
+                           2300, 2400, 2600, 3300, 3500, 3700,
+                           4500, 4800, 5000, 5200, 5500, 5800,
+                           5900, 6000 };
+
+            if (!double.TryParse(txtFrequency.Text, out StandardFxValue) || !validFrequencies.Contains((int)StandardFxValue))
             {
-                MessageBox.Show("Please enter a valid frequency in MHz (800 to 6000 MHz).");
-                txtFrequency.Focus();
+                MessageBox.Show("Please enter a valid Standard frequency: 800, 850, 900, 1800, 1900, 2100, 2300, 2400, 2600, 3300, 3500, 3700, 4500, 4800, 5000, 5200, 5500, 5800, 5900, 6000 MHz.",
+                    "Invalid Frequency", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
 
