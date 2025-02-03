@@ -2,6 +2,8 @@
 using System.Drawing;
 using System.Windows.Forms;
 using System.Globalization;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using TextBox = System.Windows.Forms.TextBox;
 
 namespace Cost_2100_Path_Loss_Calculator
 {
@@ -21,9 +23,11 @@ namespace Cost_2100_Path_Loss_Calculator
         {
             InitializeComponent();
 
-
-
             //Set the placeholder text in the Tag property for each TextBox
+            toolTip1 = new System.Windows.Forms.ToolTip();
+            toolTip1.AutoPopDelay = 2000; // Tooltip will disappear after 2 seconds
+            toolTip1.InitialDelay = 0;    // Show immediately
+            toolTip1.ReshowDelay = 0;
 
             txtDistance.Tag = DistancePlaceholder;
             txtFrequency.Tag = FrequencyPlaceholder;
@@ -36,11 +40,17 @@ namespace Cost_2100_Path_Loss_Calculator
 
             // Set the placeholder text and color initially
             SetPlaceholderText();
+        }
 
 
-
-
-
+        private void TextBox_MouseHover(object sender, EventArgs e)
+        {
+            TextBox textBox = sender as TextBox;
+            if (textBox != null && textBox.Tag != null)
+            {
+                string placeholderText = textBox.Tag.ToString(); // Get placeholder from Tag property
+                toolTip1.Show(placeholderText, textBox, textBox.Width, 0, 2000); // Show tooltip for 2 seconds
+            }
         }
 
         private void ShowResults()
@@ -108,104 +118,131 @@ namespace Cost_2100_Path_Loss_Calculator
 
 
 
-
-
         private bool ValidateInputs()
         {
+            bool allFieldsValid = true;
             double value;
 
-            // Validate distance (in kilometers, reasonable range 0.1 to 100 km)
+            // Reset all textbox backgrounds to default
+            Color defaultColor = SystemColors.Window;
+            Color defaultLabelColor = SystemColors.ControlText;
+
+            txtDistance.BackColor = defaultColor;
+            txtFrequency.BackColor = defaultColor;
+            txtTransmitPower.BackColor = defaultColor;
+            txtReceiverSensitivity.BackColor = defaultColor;
+            txtAntennaHeightTransmitter.BackColor = defaultColor;
+            txtAntennaHeightReceiver.BackColor = defaultColor;
+            txtBuildingHeight.BackColor = defaultColor;
+            txtClutterFactor.BackColor = defaultColor;
+            cmbEnvironment.BackColor = defaultColor;
+            cmbMIMO.BackColor = defaultColor;
+
+            label3.ForeColor = defaultLabelColor;
+            label4.ForeColor = defaultLabelColor;
+
+            // Validate distance
             if (!double.TryParse(txtDistance.Text, out value) || value < 0.1 || value > 100)
             {
-                MessageBox.Show("Please enter a valid distance in kilometers (0.1 to 100 km).");
-                txtDistance.Focus();
-                return false;
+                txtDistance.BackColor = Color.LightCoral;
+                allFieldsValid = false;
             }
 
-            // Validate frequency (in MHz, reasonable range 100 to 6000 MHz)
+            // Validate frequency (only standard values)
             double StandardFxValue;
             int[] validFrequencies = { 800, 850, 900, 1800, 1900, 2100,
-                           2300, 2400, 2600, 3300, 3500, 3700,
-                           4500, 4800, 5000, 5200, 5500, 5800,
-                           5900, 6000 };
+                               2300, 2400, 2600, 3300, 3500, 3700,
+                               4500, 4800, 5000, 5200, 5500, 5800,
+                               5900, 6000 };
 
-            if (!double.TryParse(txtFrequency.Text, out StandardFxValue) || !validFrequencies.Contains((int)StandardFxValue))
+            if (!double.TryParse(txtFrequency.Text, out StandardFxValue) ||
+                !validFrequencies.Contains((int)Math.Round(StandardFxValue)))
             {
-                MessageBox.Show("Please enter a valid Standard frequency: 800, 850, 900, 1800, 1900, 2100, 2300, 2400, 2600, 3300, 3500, 3700, 4500, 4800, 5000, 5200, 5500, 5800, 5900, 6000 MHz.",
-                    "Invalid Frequency", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return false;
+                txtFrequency.BackColor = Color.LightCoral;
+                allFieldsValid = false;
             }
 
-            // Validate transmit power (in dBm, reasonable range -100 to 50 dBm)
+            // Validate transmit power
             if (!double.TryParse(txtTransmitPower.Text, out value) || value < -100 || value > 50)
             {
-                MessageBox.Show("Please enter a valid transmit power in dBm (-100 to 50 dBm).");
-                txtTransmitPower.Focus();
-                return false;
+                txtTransmitPower.BackColor = Color.LightCoral;
+                allFieldsValid = false;
             }
 
-            // Validate receiver sensitivity (in dBm, reasonable range -120 to 0 dBm)
+            // Validate receiver sensitivity
             if (!double.TryParse(txtReceiverSensitivity.Text, out value) || value < -120 || value > 0)
             {
-                MessageBox.Show("Please enter a valid receiver sensitivity in dBm (-120 to 0 dBm).");
-                txtReceiverSensitivity.Focus();
-                return false;
+                txtReceiverSensitivity.BackColor = Color.LightCoral;
+                allFieldsValid = false;
             }
 
-            // Validate antenna height (in meters, reasonable range 1 to 250 m)
+            // Validate transmitter antenna height
             if (!double.TryParse(txtAntennaHeightTransmitter.Text, out value) || value < 1 || value > 250)
             {
-                MessageBox.Show("Please enter a valid transmitter antenna height in meters (1 to 250 m).");
-                txtAntennaHeightTransmitter.Focus();
-                return false;
+                txtAntennaHeightTransmitter.BackColor = Color.LightCoral;
+                allFieldsValid = false;
             }
 
+            // Validate receiver antenna height
             if (!double.TryParse(txtAntennaHeightReceiver.Text, out value) || value < 1 || value > 300)
             {
-                MessageBox.Show("Please enter a valid receiver antenna height in meters (1 to 300 m).");
-                txtAntennaHeightReceiver.Focus();
-                return false;
+                txtAntennaHeightReceiver.BackColor = Color.LightCoral;
+                allFieldsValid = false;
             }
 
-            // Validate building height (in meters, reasonable range 1 to 200 m)
+            // Validate building height
             if (!double.TryParse(txtBuildingHeight.Text, out value) || value < 1 || value > 200)
             {
-                MessageBox.Show("Please enter a valid building height in meters (1 to 200 m).");
-                txtBuildingHeight.Focus();
-                return false;
+                txtBuildingHeight.BackColor = Color.LightCoral;
+                allFieldsValid = false;
             }
 
-            // Validate clutter factor (unitless multiplier, reasonable range 0.1 to 6)
+            // Validate clutter factor
             if (!string.IsNullOrWhiteSpace(txtClutterFactor.Text) && txtClutterFactor.Text != txtClutterFactor.Tag?.ToString())
             {
-
-
-
-                // Try to parse the value only if the field is not empty or placeholder
-                if (!double.TryParse(txtClutterFactor.Text, out value))
+                if (!double.TryParse(txtClutterFactor.Text, out value) || value < 0.1 || value > 6)
                 {
-                    MessageBox.Show("Please enter a valid numeric value for the Clutter Factor.", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return false; // Exit if the input is invalid
+                    txtClutterFactor.BackColor = Color.LightCoral;
+                    allFieldsValid = false;
                 }
-
-
-                // Ensure the value is within the valid range
-                if (value <= 0.1 || value > 6)
-                {
-                    MessageBox.Show("Clutter Factor must be between 0.1 and 6.", "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return false; // Exit if the value is out of range
-                }
-
-
-
-                return true; // All inputs are valid
             }
             else
             {
-                txtClutterFactor.Text = "0.1";
-                return true;
+                txtClutterFactor.Text = "0.1"; // Default value
             }
+
+
+            if (cmbEnvironment.SelectedIndex == -1) // No selection
+            {
+                cmbEnvironment.BackColor = Color.LightCoral;
+                label3.BackColor = Color.LightCoral;
+                label3.ForeColor = Color.Black;
+                allFieldsValid = false;
+            }
+            else
+            {
+                label3.ForeColor = defaultLabelColor;
+                label3.BackColor = Color.White;
+                ;
+            }
+
+            if (cmbMIMO.SelectedIndex == -1) // No selection
+            {
+                cmbMIMO.BackColor = Color.LightCoral;
+                label4.BackColor = Color.LightCoral;
+                label4.ForeColor = Color.Black;
+                allFieldsValid = false;
+            }
+            else
+            {
+                label4.ForeColor = defaultLabelColor;
+                label4.BackColor = Color.White;
+            }
+
+            return allFieldsValid;
         }
+
+         
 
         private const double Urban_A = 120;
         private const double Urban_B = 30;
@@ -216,14 +253,18 @@ namespace Cost_2100_Path_Loss_Calculator
         private const double Suburban_B = 32;
         private const double Suburban_C = 2.5;
         private const double Suburban_K = 0;
-
+        private readonly System.Windows.Forms.ToolTip toolTip1;
+        private Color defaultLabelColor;
 
         private void btnCalculate_Click(object sender, EventArgs e)
         {
             if (!ValidateInputs())
             {
-                return; // Stop calculation if inputs are invalid
+                MessageBox.Show("Please correct the highlighted fields before proceeding.",
+                         "Input Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
             }
+
 
             // Get input values
             double distance = double.Parse(txtDistance.Text);
@@ -491,6 +532,6 @@ namespace Cost_2100_Path_Loss_Calculator
             //HighlightResults();
         }
 
-
+       
     }
 }

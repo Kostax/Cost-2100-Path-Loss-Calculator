@@ -63,6 +63,7 @@ namespace Cost_2100_Path_Loss_Calculator
             txtDistance.TabIndex = 1;
             txtDistance.Click += TextBox_Enter;
             txtDistance.Leave += TextBox_Leave;
+            txtDistance.MouseHover += TextBox_MouseHover;
             // 
             // txtFrequency
             // 
@@ -75,6 +76,7 @@ namespace Cost_2100_Path_Loss_Calculator
             txtFrequency.TabIndex = 10;
             txtFrequency.Click += TextBox_Enter;
             txtFrequency.Leave += TextBox_Leave;
+            txtFrequency.MouseHover += TextBox_MouseHover;
             // 
             // txtTransmitPower
             // 
@@ -87,6 +89,7 @@ namespace Cost_2100_Path_Loss_Calculator
             txtTransmitPower.TabIndex = 7;
             txtTransmitPower.Click += TextBox_Enter;
             txtTransmitPower.Leave += TextBox_Leave;
+            txtTransmitPower.MouseHover += TextBox_MouseHover;
             // 
             // cmbEnvironment
             // 
@@ -112,6 +115,7 @@ namespace Cost_2100_Path_Loss_Calculator
             txtReceiverSensitivity.TabIndex = 9;
             txtReceiverSensitivity.Click += TextBox_Enter;
             txtReceiverSensitivity.Leave += TextBox_Leave;
+            txtReceiverSensitivity.MouseHover += TextBox_MouseHover;
             // 
             // txtAntennaHeightTransmitter
             // 
@@ -124,6 +128,7 @@ namespace Cost_2100_Path_Loss_Calculator
             txtAntennaHeightTransmitter.TabIndex = 2;
             txtAntennaHeightTransmitter.Click += TextBox_Enter;
             txtAntennaHeightTransmitter.Leave += TextBox_Leave;
+            txtAntennaHeightTransmitter.MouseHover += TextBox_MouseHover;
             // 
             // txtAntennaHeightReceiver
             // 
@@ -136,6 +141,7 @@ namespace Cost_2100_Path_Loss_Calculator
             txtAntennaHeightReceiver.TabIndex = 3;
             txtAntennaHeightReceiver.Click += TextBox_Enter;
             txtAntennaHeightReceiver.Leave += TextBox_Leave;
+            txtAntennaHeightReceiver.MouseHover += TextBox_MouseHover;
             // 
             // button1
             // 
@@ -193,6 +199,7 @@ namespace Cost_2100_Path_Loss_Calculator
             txtBuildingHeight.TabIndex = 16;
             txtBuildingHeight.Click += TextBox_Enter;
             txtBuildingHeight.Leave += TextBox_Leave;
+            txtBuildingHeight.MouseHover += TextBox_MouseHover;
             // 
             // txtClutterFactor
             // 
@@ -205,17 +212,18 @@ namespace Cost_2100_Path_Loss_Calculator
             txtClutterFactor.TabIndex = 17;
             txtClutterFactor.Click += TextBox_Enter;
             txtClutterFactor.Leave += TextBox_Leave;
+            txtClutterFactor.MouseHover += TextBox_MouseHover;
             // 
             // label3
             // 
             label3.AutoSize = true;
             label3.BackColor = SystemColors.Control;
             label3.BorderStyle = BorderStyle.FixedSingle;
-            label3.Font = new Font("Arial Narrow", 13.8F, FontStyle.Italic, GraphicsUnit.Point, 161);
+            label3.Font = new Font("Arial Narrow", 13.8F, FontStyle.Bold | FontStyle.Italic);
             label3.ForeColor = SystemColors.ActiveCaptionText;
-            label3.Location = new Point(34, 191);
+            label3.Location = new Point(21, 191);
             label3.Name = "label3";
-            label3.Size = new Size(173, 29);
+            label3.Size = new Size(186, 29);
             label3.TabIndex = 18;
             label3.Text = "Select City Density:";
             // 
@@ -289,11 +297,11 @@ namespace Cost_2100_Path_Loss_Calculator
             label4.AutoSize = true;
             label4.BackColor = SystemColors.Control;
             label4.BorderStyle = BorderStyle.FixedSingle;
-            label4.Font = new Font("Arial Narrow", 13.8F, FontStyle.Italic, GraphicsUnit.Point, 161);
+            label4.Font = new Font("Arial Narrow", 13.8F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 161);
             label4.ForeColor = SystemColors.ActiveCaptionText;
-            label4.Location = new Point(85, 241);
+            label4.Location = new Point(77, 243);
             label4.Name = "label4";
-            label4.Size = new Size(122, 29);
+            label4.Size = new Size(130, 29);
             label4.TabIndex = 24;
             label4.Text = "Apply MIMO:";
             // 
