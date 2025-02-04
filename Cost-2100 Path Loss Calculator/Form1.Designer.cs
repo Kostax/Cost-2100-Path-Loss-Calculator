@@ -57,9 +57,10 @@ namespace Cost_2100_Path_Loss_Calculator
             txtDistance.BackColor = SystemColors.Control;
             txtDistance.Font = new Font("Arial Narrow", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 161);
             txtDistance.ForeColor = Color.Gray;
-            txtDistance.Location = new Point(12, 380);
+            txtDistance.Location = new Point(12, 236);
+            txtDistance.Margin = new Padding(3, 2, 3, 2);
             txtDistance.Name = "txtDistance";
-            txtDistance.Size = new Size(410, 27);
+            txtDistance.Size = new Size(384, 27);
             txtDistance.TabIndex = 1;
             txtDistance.Click += TextBox_Enter;
             txtDistance.Leave += TextBox_Leave;
@@ -70,9 +71,10 @@ namespace Cost_2100_Path_Loss_Calculator
             txtFrequency.BackColor = SystemColors.Control;
             txtFrequency.Font = new Font("Arial", 10.2F);
             txtFrequency.ForeColor = Color.Gray;
-            txtFrequency.Location = new Point(464, 446);
+            txtFrequency.Location = new Point(418, 316);
+            txtFrequency.Margin = new Padding(3, 2, 3, 2);
             txtFrequency.Name = "txtFrequency";
-            txtFrequency.Size = new Size(410, 27);
+            txtFrequency.Size = new Size(384, 27);
             txtFrequency.TabIndex = 10;
             txtFrequency.Click += TextBox_Enter;
             txtFrequency.Leave += TextBox_Leave;
@@ -83,9 +85,10 @@ namespace Cost_2100_Path_Loss_Calculator
             txtTransmitPower.BackColor = SystemColors.Control;
             txtTransmitPower.Font = new Font("Arial", 10.2F);
             txtTransmitPower.ForeColor = Color.Gray;
-            txtTransmitPower.Location = new Point(464, 380);
+            txtTransmitPower.Location = new Point(418, 236);
+            txtTransmitPower.Margin = new Padding(3, 2, 3, 2);
             txtTransmitPower.Name = "txtTransmitPower";
-            txtTransmitPower.Size = new Size(410, 27);
+            txtTransmitPower.Size = new Size(384, 27);
             txtTransmitPower.TabIndex = 7;
             txtTransmitPower.Click += TextBox_Enter;
             txtTransmitPower.Leave += TextBox_Leave;
@@ -98,9 +101,10 @@ namespace Cost_2100_Path_Loss_Calculator
             cmbEnvironment.ForeColor = Color.Black;
             cmbEnvironment.FormattingEnabled = true;
             cmbEnvironment.Items.AddRange(new object[] { "Urban", "Suburban" });
-            cmbEnvironment.Location = new Point(213, 191);
+            cmbEnvironment.Location = new Point(199, 144);
+            cmbEnvironment.Margin = new Padding(3, 2, 3, 2);
             cmbEnvironment.Name = "cmbEnvironment";
-            cmbEnvironment.Size = new Size(249, 28);
+            cmbEnvironment.Size = new Size(218, 28);
             cmbEnvironment.TabIndex = 4;
             cmbEnvironment.Click += ComboBox1_Click;
             // 
@@ -109,9 +113,10 @@ namespace Cost_2100_Path_Loss_Calculator
             txtReceiverSensitivity.BackColor = SystemColors.Control;
             txtReceiverSensitivity.Font = new Font("Arial", 10.2F);
             txtReceiverSensitivity.ForeColor = Color.Gray;
-            txtReceiverSensitivity.Location = new Point(464, 413);
+            txtReceiverSensitivity.Location = new Point(418, 276);
+            txtReceiverSensitivity.Margin = new Padding(3, 2, 3, 2);
             txtReceiverSensitivity.Name = "txtReceiverSensitivity";
-            txtReceiverSensitivity.Size = new Size(410, 27);
+            txtReceiverSensitivity.Size = new Size(384, 27);
             txtReceiverSensitivity.TabIndex = 9;
             txtReceiverSensitivity.Click += TextBox_Enter;
             txtReceiverSensitivity.Leave += TextBox_Leave;
@@ -122,9 +127,10 @@ namespace Cost_2100_Path_Loss_Calculator
             txtAntennaHeightTransmitter.BackColor = SystemColors.Control;
             txtAntennaHeightTransmitter.Font = new Font("Arial", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 161);
             txtAntennaHeightTransmitter.ForeColor = Color.Gray;
-            txtAntennaHeightTransmitter.Location = new Point(12, 413);
+            txtAntennaHeightTransmitter.Location = new Point(13, 276);
+            txtAntennaHeightTransmitter.Margin = new Padding(3, 2, 3, 2);
             txtAntennaHeightTransmitter.Name = "txtAntennaHeightTransmitter";
-            txtAntennaHeightTransmitter.Size = new Size(410, 27);
+            txtAntennaHeightTransmitter.Size = new Size(384, 27);
             txtAntennaHeightTransmitter.TabIndex = 2;
             txtAntennaHeightTransmitter.Click += TextBox_Enter;
             txtAntennaHeightTransmitter.Leave += TextBox_Leave;
@@ -135,9 +141,10 @@ namespace Cost_2100_Path_Loss_Calculator
             txtAntennaHeightReceiver.BackColor = SystemColors.Control;
             txtAntennaHeightReceiver.Font = new Font("Arial", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 161);
             txtAntennaHeightReceiver.ForeColor = Color.Gray;
-            txtAntennaHeightReceiver.Location = new Point(12, 446);
+            txtAntennaHeightReceiver.Location = new Point(13, 316);
+            txtAntennaHeightReceiver.Margin = new Padding(3, 2, 3, 2);
             txtAntennaHeightReceiver.Name = "txtAntennaHeightReceiver";
-            txtAntennaHeightReceiver.Size = new Size(410, 27);
+            txtAntennaHeightReceiver.Size = new Size(384, 27);
             txtAntennaHeightReceiver.TabIndex = 3;
             txtAntennaHeightReceiver.Click += TextBox_Enter;
             txtAntennaHeightReceiver.Leave += TextBox_Leave;
@@ -154,9 +161,10 @@ namespace Cost_2100_Path_Loss_Calculator
             button1.FlatStyle = FlatStyle.Popup;
             button1.Font = new Font("Arial Narrow", 13.8F, FontStyle.Italic);
             button1.ForeColor = SystemColors.ActiveCaptionText;
-            button1.Location = new Point(667, 512);
+            button1.Location = new Point(621, 402);
+            button1.Margin = new Padding(3, 2, 3, 2);
             button1.Name = "button1";
-            button1.Size = new Size(207, 57);
+            button1.Size = new Size(181, 43);
             button1.TabIndex = 12;
             button1.Text = ">Calculate";
             button1.UseVisualStyleBackColor = false;
@@ -167,9 +175,9 @@ namespace Cost_2100_Path_Loss_Calculator
             lblResult.BackColor = SystemColors.Control;
             lblResult.Font = new Font("Arial Narrow", 13.8F, FontStyle.Italic);
             lblResult.ForeColor = SystemColors.ActiveCaptionText;
-            lblResult.Location = new Point(12, 594);
+            lblResult.Location = new Point(10, 486);
             lblResult.Name = "lblResult";
-            lblResult.Size = new Size(410, 82);
+            lblResult.Size = new Size(386, 62);
             lblResult.TabIndex = 13;
             lblResult.Text = "Result";
             lblResult.TextAlign = ContentAlignment.MiddleCenter;
@@ -180,9 +188,9 @@ namespace Cost_2100_Path_Loss_Calculator
             lblSignalStrength.BackColor = SystemColors.Control;
             lblSignalStrength.Font = new Font("Arial Narrow", 13.8F, FontStyle.Italic);
             lblSignalStrength.ForeColor = SystemColors.ActiveCaptionText;
-            lblSignalStrength.Location = new Point(464, 594);
+            lblSignalStrength.Location = new Point(418, 482);
             lblSignalStrength.Name = "lblSignalStrength";
-            lblSignalStrength.Size = new Size(360, 82);
+            lblSignalStrength.Size = new Size(384, 62);
             lblSignalStrength.TabIndex = 15;
             lblSignalStrength.Text = "Signal Strength";
             lblSignalStrength.TextAlign = ContentAlignment.MiddleCenter;
@@ -193,9 +201,10 @@ namespace Cost_2100_Path_Loss_Calculator
             txtBuildingHeight.BackColor = SystemColors.Control;
             txtBuildingHeight.Font = new Font("Arial", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 161);
             txtBuildingHeight.ForeColor = Color.Gray;
-            txtBuildingHeight.Location = new Point(12, 479);
+            txtBuildingHeight.Location = new Point(13, 357);
+            txtBuildingHeight.Margin = new Padding(3, 2, 3, 2);
             txtBuildingHeight.Name = "txtBuildingHeight";
-            txtBuildingHeight.Size = new Size(410, 27);
+            txtBuildingHeight.Size = new Size(384, 27);
             txtBuildingHeight.TabIndex = 16;
             txtBuildingHeight.Click += TextBox_Enter;
             txtBuildingHeight.Leave += TextBox_Leave;
@@ -206,9 +215,10 @@ namespace Cost_2100_Path_Loss_Calculator
             txtClutterFactor.BackColor = SystemColors.Control;
             txtClutterFactor.Font = new Font("Arial", 10.2F);
             txtClutterFactor.ForeColor = Color.Gray;
-            txtClutterFactor.Location = new Point(464, 479);
+            txtClutterFactor.Location = new Point(418, 357);
+            txtClutterFactor.Margin = new Padding(3, 2, 3, 2);
             txtClutterFactor.Name = "txtClutterFactor";
-            txtClutterFactor.Size = new Size(410, 27);
+            txtClutterFactor.Size = new Size(384, 27);
             txtClutterFactor.TabIndex = 17;
             txtClutterFactor.Click += TextBox_Enter;
             txtClutterFactor.Leave += TextBox_Leave;
@@ -221,11 +231,11 @@ namespace Cost_2100_Path_Loss_Calculator
             label3.BorderStyle = BorderStyle.FixedSingle;
             label3.Font = new Font("Arial Narrow", 13.8F, FontStyle.Bold | FontStyle.Italic);
             label3.ForeColor = SystemColors.ActiveCaptionText;
-            label3.Location = new Point(21, 191);
+            label3.Location = new Point(13, 144);
             label3.Name = "label3";
-            label3.Size = new Size(186, 29);
+            label3.Size = new Size(180, 29);
             label3.TabIndex = 18;
-            label3.Text = "Select City Density:";
+            label3.Text = "Select City Density";
             // 
             // btnReset
             // 
@@ -234,9 +244,10 @@ namespace Cost_2100_Path_Loss_Calculator
             btnReset.FlatAppearance.BorderSize = 4;
             btnReset.Font = new Font("Arial Narrow", 13.8F, FontStyle.Italic);
             btnReset.ForeColor = Color.Black;
-            btnReset.Location = new Point(11, 546);
+            btnReset.Location = new Point(9, 402);
+            btnReset.Margin = new Padding(3, 2, 3, 2);
             btnReset.Name = "btnReset";
-            btnReset.Size = new Size(168, 33);
+            btnReset.Size = new Size(147, 34);
             btnReset.TabIndex = 19;
             btnReset.Text = "Clear All";
             btnReset.UseVisualStyleBackColor = false;
@@ -246,9 +257,10 @@ namespace Cost_2100_Path_Loss_Calculator
             // 
             btnSaveResults.Font = new Font("Arial Narrow", 13.8F, FontStyle.Italic);
             btnSaveResults.ForeColor = Color.Black;
-            btnSaveResults.Location = new Point(630, 693);
+            btnSaveResults.Location = new Point(632, 560);
+            btnSaveResults.Margin = new Padding(3, 2, 3, 2);
             btnSaveResults.Name = "btnSaveResults";
-            btnSaveResults.Size = new Size(194, 36);
+            btnSaveResults.Size = new Size(170, 32);
             btnSaveResults.TabIndex = 20;
             btnSaveResults.Text = "Save Results";
             btnSaveResults.UseVisualStyleBackColor = true;
@@ -259,9 +271,10 @@ namespace Cost_2100_Path_Loss_Calculator
             // 
             btnLoadResults.Font = new Font("Arial Narrow", 13.8F, FontStyle.Italic);
             btnLoadResults.ForeColor = Color.Black;
-            btnLoadResults.Location = new Point(920, 664);
+            btnLoadResults.Location = new Point(851, 498);
+            btnLoadResults.Margin = new Padding(3, 2, 3, 2);
             btnLoadResults.Name = "btnLoadResults";
-            btnLoadResults.Size = new Size(151, 36);
+            btnLoadResults.Size = new Size(132, 31);
             btnLoadResults.TabIndex = 21;
             btnLoadResults.Text = "Load Results";
             btnLoadResults.UseVisualStyleBackColor = true;
@@ -270,14 +283,15 @@ namespace Cost_2100_Path_Loss_Calculator
             // dgvHistory
             // 
             dgvHistory.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvHistory.Location = new Point(920, 9);
+            dgvHistory.Location = new Point(808, 7);
+            dgvHistory.Margin = new Padding(3, 2, 3, 2);
             dgvHistory.Name = "dgvHistory";
             dgvHistory.RowHeadersWidth = 51;
             dgvHistory.ShowCellErrors = false;
             dgvHistory.ShowCellToolTips = false;
             dgvHistory.ShowEditingIcon = false;
             dgvHistory.ShowRowErrors = false;
-            dgvHistory.Size = new Size(843, 649);
+            dgvHistory.Size = new Size(744, 487);
             dgvHistory.TabIndex = 22;
             // 
             // cmbMIMO
@@ -287,9 +301,10 @@ namespace Cost_2100_Path_Loss_Calculator
             cmbMIMO.ForeColor = Color.Black;
             cmbMIMO.FormattingEnabled = true;
             cmbMIMO.Items.AddRange(new object[] { "1x1", "2x2", "4x4" });
-            cmbMIMO.Location = new Point(213, 243);
+            cmbMIMO.Location = new Point(199, 183);
+            cmbMIMO.Margin = new Padding(3, 2, 3, 2);
             cmbMIMO.Name = "cmbMIMO";
-            cmbMIMO.Size = new Size(249, 28);
+            cmbMIMO.Size = new Size(218, 28);
             cmbMIMO.TabIndex = 23;
             // 
             // label4
@@ -299,20 +314,20 @@ namespace Cost_2100_Path_Loss_Calculator
             label4.BorderStyle = BorderStyle.FixedSingle;
             label4.Font = new Font("Arial Narrow", 13.8F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 161);
             label4.ForeColor = SystemColors.ActiveCaptionText;
-            label4.Location = new Point(77, 243);
+            label4.Location = new Point(69, 183);
             label4.Name = "label4";
-            label4.Size = new Size(130, 29);
+            label4.Size = new Size(124, 29);
             label4.TabIndex = 24;
-            label4.Text = "Apply MIMO:";
+            label4.Text = "Apply MIMO";
             // 
             // label2
             // 
             label2.AutoSize = true;
             label2.BackColor = SystemColors.Control;
-            label2.Font = new Font("Arial", 28.2F, FontStyle.Bold | FontStyle.Underline, GraphicsUnit.Point, 161);
+            label2.Font = new Font("Arial", 28.2F, FontStyle.Bold, GraphicsUnit.Point, 161);
             label2.ForeColor = SystemColors.ActiveCaptionText;
             label2.ImageAlign = ContentAlignment.TopCenter;
-            label2.Location = new Point(11, 9);
+            label2.Location = new Point(10, 7);
             label2.Name = "label2";
             label2.Size = new Size(411, 55);
             label2.TabIndex = 26;
@@ -326,20 +341,18 @@ namespace Cost_2100_Path_Loss_Calculator
             label6.Font = new Font("Arial Narrow", 13.8F, FontStyle.Italic);
             label6.ForeColor = SystemColors.ActiveCaptionText;
             label6.ImageAlign = ContentAlignment.TopCenter;
-            label6.Location = new Point(11, 64);
+            label6.Location = new Point(9, 62);
             label6.Name = "label6";
-            label6.Size = new Size(411, 81);
+            label6.Size = new Size(412, 61);
             label6.TabIndex = 27;
             label6.Text = " Predict the propagation of radio waves in urban and suburban environments.";
             // 
             // Form1
             // 
             AcceptButton = button1;
-            AutoScaleDimensions = new SizeF(8F, 20F);
-            AutoScaleMode = AutoScaleMode.Font;
-            AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            AutoScaleMode = AutoScaleMode.None;
             BackColor = Color.DarkCyan;
-            ClientSize = new Size(1775, 742);
+            ClientSize = new Size(1555, 725);
             Controls.Add(label6);
             Controls.Add(label2);
             Controls.Add(label4);
@@ -363,11 +376,11 @@ namespace Cost_2100_Path_Loss_Calculator
             Controls.Add(txtDistance);
             ForeColor = SystemColors.ActiveBorder;
             FormBorderStyle = FormBorderStyle.FixedToolWindow;
+            Margin = new Padding(3, 2, 3, 2);
             Name = "Form1";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Form1";
             TransparencyKey = SystemColors.ActiveBorder;
-            WindowState = FormWindowState.Maximized;
             Click += TextBox_Leave;
             DoubleClick += TextBox_Leave;
             ((System.ComponentModel.ISupportInitialize)dgvHistory).EndInit();

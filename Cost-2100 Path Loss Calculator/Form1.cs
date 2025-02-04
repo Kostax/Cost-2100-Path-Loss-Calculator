@@ -15,7 +15,7 @@ namespace Cost_2100_Path_Loss_Calculator
         private const string ReceiverSensitivityPlaceholder = "Enter Receiver Sensitivity(-120 to 0 dBm)";
         private const string AntennaHeightTransmitterPlaceholder = "Enter Transmitter Antenna Height (1 to 250 Meters)";
         private const string AntennaHeightReceiverPlaceholder = "Enter Receiver Antenna Height (1 to 300 Meters)";
-        private const string BuildingHeightPlaceholder = "Enter Average Building Height (Meters 1 to 200 Meters)";
+        private const string BuildingHeightPlaceholder = "Enter Average Building Height (1 to 200 Meters)";
         private const string ClutterFactorPlaceholder = "Enter Clutter Factor(0.1 to 6 dBm)";
 
 
@@ -151,9 +151,9 @@ namespace Cost_2100_Path_Loss_Calculator
             // Validate frequency (only standard values)
             double StandardFxValue;
             int[] validFrequencies = { 800, 850, 900, 1800, 1900, 2100,
-                               2300, 2400, 2600, 3300, 3500, 3700,
-                               4500, 4800, 5000, 5200, 5500, 5800,
-                               5900, 6000 };
+                                       2300, 2400, 2600, 3300, 3500, 3700,
+                                       4500, 4800, 5000, 5200, 5500, 5800,
+                                       5900, 6000 };
 
             if (!double.TryParse(txtFrequency.Text, out StandardFxValue) ||
                 !validFrequencies.Contains((int)Math.Round(StandardFxValue)))
@@ -520,6 +520,10 @@ namespace Cost_2100_Path_Loss_Calculator
                                 }
                             }
                         }
+                        dgvHistory.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;  // Columns auto-fill space
+                        dgvHistory.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;    // Rows resize based on content
+                        dgvHistory.AllowUserToResizeRows = false;  // Prevent manual row resizing
+                        dgvHistory.AllowUserToResizeColumns = true;
 
                         MessageBox.Show("History loaded successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
@@ -528,6 +532,9 @@ namespace Cost_2100_Path_Loss_Calculator
                         MessageBox.Show($"Error loading file: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
+
+            
+              
             }
             //HighlightResults();
         }
