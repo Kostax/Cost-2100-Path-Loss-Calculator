@@ -9,4 +9,4 @@
 
 	-Once the clutter adjustment is calculated, it is added to the pathLoss, effectively increasing the path loss value, reflecting the additional obstacles and interference in the environment.
 
-	-Clutter factor does not necessarily needs an input.If intentionally left blank it will be automatically be assigned as 0.1 which means minimum influence but still an additional adjustment to the path loss calculation as we are referring to urban and suburban environments only.
+	-Clutter factor does not necessarily needs an input.If intentionally left blank it will be automatically be assigned as 0.1 which means minimum influence but still an additional adjustment to the path loss calculation since we are referring to urban and suburban environments only.
