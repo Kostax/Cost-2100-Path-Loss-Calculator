@@ -10,6 +10,6 @@
 
 	-Clutter factor does not necessarily needs an input.If intentionally left blank it will be automatically be assigned as 0.1 which means minimum influence but still an additional adjustment to the path loss calculation.
 
-	-Valid Frequencies   { 800, 850, 900, 1800, 1900, 2100,2300, 2400, 2600, 3300, 3500, 3700, 4500, 4800, 5000, 5200, 5500, 5800, 5900, 6000 }.
+	-Valid Frequencies   (800, 850, 900, 1800, 1900, 2100,2300, 2400, 2600, 3300, 3500, 3700, 4500, 4800, 5000, 5200, 5500, 5800, 5900, 6000).
 
 
