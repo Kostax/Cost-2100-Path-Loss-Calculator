@@ -300,7 +300,7 @@ namespace Cost_2100_Path_Loss_Calculator
             cmbMIMO.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbMIMO.ForeColor = Color.Black;
             cmbMIMO.FormattingEnabled = true;
-            cmbMIMO.Items.AddRange(new object[] { "1x1", "2x2", "4x4" });
+            cmbMIMO.Items.AddRange(new object[] { "1x1(Default)", "2x2", "4x4", "16x16", "64x64(Massive)" });
             cmbMIMO.Location = new Point(199, 183);
             cmbMIMO.Margin = new Padding(3, 2, 3, 2);
             cmbMIMO.Name = "cmbMIMO";

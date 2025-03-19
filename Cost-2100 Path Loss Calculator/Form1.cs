@@ -16,7 +16,7 @@ namespace Cost_2100_Path_Loss_Calculator
         private const string AntennaHeightTransmitterPlaceholder = "Enter Transmitter Antenna Height (1 to 250 Meters)";
         private const string AntennaHeightReceiverPlaceholder = "Enter Receiver Antenna Height (1 to 300 Meters)";
         private const string BuildingHeightPlaceholder = "Enter Average Building Height (1 to 200 Meters)";
-        private const string ClutterFactorPlaceholder = "Enter Clutter Factor(0.1 to 6 dBm)";
+        private const string ClutterFactorPlaceholder = "Enter Clutter Factor(0.1 to 6 dB)";
 
 
         public Form1()
@@ -284,7 +284,9 @@ namespace Cost_2100_Path_Loss_Calculator
                 string mimoConfig = cmbMIMO.SelectedItem.ToString();
                 if (mimoConfig == "2x2") { numTx = 2; numRx = 2; }
                 else if (mimoConfig == "4x4") { numTx = 4; numRx = 4; }
-            }
+                else if (mimoConfig == "16x16") { numTx = 16; numRx = 16; }
+                else if (mimoConfig == "64x64") { numTx = 64; numRx = 64; }
+                }
 
             // Compute MIMO Gain
             double mimoGain = 10 * Math.Log10(numTx * numRx);
