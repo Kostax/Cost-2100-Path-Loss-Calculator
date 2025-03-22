@@ -345,7 +345,7 @@ namespace Cost_2100_Path_Loss_Calculator
             label6.Name = "label6";
             label6.Size = new Size(412, 61);
             label6.TabIndex = 27;
-            label6.Text = " Predict the propagation of radio waves in urban and suburban environments.";
+            label6.Text = "Calculate Path Loss And the Strength of the Received Signal";
             // 
             // Form1
             // 
