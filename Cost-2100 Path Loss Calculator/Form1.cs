@@ -11,7 +11,7 @@ namespace Cost_2100_Path_Loss_Calculator
     {
         private const string DistancePlaceholder = "Enter Distance(0.1 to 100 km)";
         private const string FrequencyPlaceholder = "Enter Standard Frequency(800 to 6.000 MHz)";
-        private const string TransmitPowerPlaceholder = "Enter Transmit Power(-50 to 50 dBm)";
+        private const string TransmitPowerPlaceholder = "Enter Transmit Power(-10 to 50 dBm)";
         private const string ReceiverSensitivityPlaceholder = "Enter Receiver Sensitivity(-120 to -50 dBm)";
         private const string AntennaHeightTransmitterPlaceholder = "Enter Transmitter Antenna Height (1 to 250 Meters)";
         private const string AntennaHeightReceiverPlaceholder = "Enter Receiver Antenna Height (1 to 300 Meters)";
@@ -163,7 +163,7 @@ namespace Cost_2100_Path_Loss_Calculator
             }
 
             // Validate transmit power
-            if (!double.TryParse(txtTransmitPower.Text, out value) || value < -50 || value > 50)
+            if (!double.TryParse(txtTransmitPower.Text, out value) || value < -10 || value > 50)
             {
                 txtTransmitPower.BackColor = Color.LightCoral;
                 allFieldsValid = false;
