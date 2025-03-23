@@ -284,8 +284,10 @@ namespace Cost_2100_Path_Loss_Calculator
                 string mimoConfig = cmbMIMO.SelectedItem.ToString();
                 if (mimoConfig == "2x2") { numTx = 2; numRx = 2; }
                 else if (mimoConfig == "4x4") { numTx = 4; numRx = 4; }
-                else if (mimoConfig == "16x16") { numTx = 16; numRx = 16; }
+                else if (mimoConfig == "8x8") { numTx = 8; numRx = 8; }
+                else if (mimoConfig == "64x1") { numTx = 64; numRx = 1; }
                 else if (mimoConfig == "64x64") { numTx = 64; numRx = 64; }
+
                 }
 
             // Compute MIMO Gain
